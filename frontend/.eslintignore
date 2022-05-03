@@ -1,0 +1,10 @@
+node_modules
+npm-debug.log
+Dockerfile
+.dockerignore
+.gitignore
+.gitattributes
+.eslintrc.json
+.eslintignore
+README.md
+*.d.ts
