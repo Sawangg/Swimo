@@ -26,7 +26,7 @@ export class Housing {
     @Column({ default: 1 })
     price: number;
 
-    @Column({ default: new Date(Date.now()) })
+    @Column()
     date: Date;
 
     @Column({ default: "Paris" })
@@ -36,7 +36,7 @@ export class Housing {
     nbParking: number;
 
     @Column()
-    image: Blob;
+    image: string;
 
     @Column()
     desc: string;
