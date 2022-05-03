@@ -1,6 +1,7 @@
 FROM node:alpine
 
 ENV FORCE_COLOR=1
+ENV NODE_ENV=production
 
 WORKDIR /home/agence
 COPY package.json yarn.lock ./
