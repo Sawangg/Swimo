@@ -6,7 +6,7 @@ export class Housing {
     id: number;
 
     @Column({ unique: true })
-    adress: string;
+    address: string;
 
     @Column()
     ownerName: string;
