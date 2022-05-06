@@ -17,6 +17,6 @@ export class Customer {
     @Column({ name: "password", nullable: false })
     password: string;
 
-    @Column({ name: "admin", nullable: false })
+    @Column({ name: "admin", default: false, nullable: false })
     isAdmin: boolean;
 }

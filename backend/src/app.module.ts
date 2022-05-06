@@ -6,10 +6,14 @@ import { VisitsModule } from "./visits/visits.module";
 import { HousingModule } from "./housing/housing.module";
 import { OffersModule } from "./offers/offers.module";
 import { SellsModule } from "./sells/sells.module";
+import { AuthModule } from "./auth/auth.module";
+import { PassportModule } from "@nestjs/passport";
+import { SessionEntity } from "./auth/entities/Session.entity";
 
 @Module({
     imports: [
         ConfigModule.forRoot({ isGlobal: true, cache: true }),
+        PassportModule.register({ session: true }),
         TypeOrmModule.forRoot({
             type: "mariadb",
             host: process.env.NODE_ENV !== "production" ? "localhost" : process.env.DB_HOST,
@@ -19,8 +23,10 @@ import { SellsModule } from "./sells/sells.module";
             database: "agencedb",
             synchronize: process.env.NODE_ENV !== "production",
             keepConnectionAlive: true,
+            entities: [SessionEntity],
             autoLoadEntities: true,
         }),
+        AuthModule,
         CustomerModule,
         VisitsModule,
         HousingModule,

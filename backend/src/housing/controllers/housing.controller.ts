@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Res } from "@nestjs/common";
-import type { Response } from "express";
 import { CreateHousingDto } from "../dtos/createHousing.dto";
 import { HousingService } from "../services/housing.service";
+import type { Response } from "express";
 
 @Controller("housing")
 export class HousingController {
