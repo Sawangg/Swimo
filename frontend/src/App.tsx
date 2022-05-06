@@ -1,4 +1,7 @@
+// Import react
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+// Import views
 import Home from "./views/Home";
 import House from "./views/House";
 import Offer from "./views/Offer";
