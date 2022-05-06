@@ -2,10 +2,10 @@
 import Bar from "components/Bar";
 
 export default function Offer() {
-  return (
-    <div>
-      <Bar />
-      Offer
-    </div>
-  );
+    return (
+        <div>
+            <Bar />
+            Offer
+        </div>
+    );
 }
