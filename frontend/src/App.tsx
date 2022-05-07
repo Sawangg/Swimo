@@ -1,21 +1,35 @@
 // Import react
+import { CssBaseline } from "@mui/material";
+import Login from "pages/Login";
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-// Import views
-import Home from "./views/Home";
-import Offer from "./views/Offer";
-import Profile from "./views/Profile";
-import Visit from "./views/Visit";
+// Import pages
+import Home from "./pages/Home";
+import Offer from "./pages/Offer";
+import Profile from "./pages/Profile";
+import Visit from "./pages/Visit";
 
 export default function App() {
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/Offer" element={<Offer />} />
-                <Route path="/Profile" element={<Profile />} />
-                <Route path="/Visit" element={<Visit />} />
-            </Routes>
-        </BrowserRouter>
+        <>
+            <CssBaseline />
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<Login />} />
+                    <Route path="/house" element={
+                        <ErrorBoundary fallback={<h1>error</h1>}>
+                            <Suspense fallback={<h1>loading</h1>}>
+                                <Home />
+                            </Suspense>
+                        </ErrorBoundary>
+                    } />
+                    <Route path="/offer" element={<Offer />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/visit" element={<Visit />} />
+                </Routes>
+            </BrowserRouter>
+        </>
     );
 }

@@ -5,17 +5,28 @@ import { useState } from "react";
 import { Card, CardContent, Typography, Dialog, AppBar, Toolbar, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-type houseProps = {
-    house: {
-        name: string,
-        type: string,
-        desc: string,
-        price: string,
-        city: string,
-    }
+export interface House {
+    id: number;
+    address: string;
+    ownerName: string;
+    type: string;
+    nbRoom: number;
+    area: number;
+    state: string;
+    price: number;
+    date: Date;
+    city: string;
+    nbParking: number;
+    image: string;
+    desc: string;
+
 }
 
-export default function HouseCard({ house }: houseProps) {
+type HouseProps = {
+    house: House
+}
+
+export default function HouseCard({ house }: HouseProps) {
     const [dialogOpen, setDialogOpen] = useState(false);
 
     return (
@@ -23,13 +34,13 @@ export default function HouseCard({ house }: houseProps) {
             <Card variant="outlined" onClick={() => setDialogOpen(true)}>
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
-                        { house.name }
+                        {house.address}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        City: { house.city }<br />
-                        Type: { house.type }<br />
-                        Price: { house.price }<br />
-                        Description: { house.desc }
+                        City: {house.city}<br />
+                        Type: {house.type}<br />
+                        Price: {house.price}<br />
+                        Description: {house.desc}
                     </Typography>
                 </CardContent>
             </Card>
@@ -41,15 +52,15 @@ export default function HouseCard({ house }: houseProps) {
                             <CloseIcon />
                         </IconButton>
                         <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-                            { house.name }
+                            {house.address}
                         </Typography>
                     </Toolbar>
                 </AppBar>
                 <Typography variant="body2" color="text.secondary">
-                    City: { house.city }<br />
-                    Type: { house.type }<br />
-                    Price: { house.price }<br />
-                    Description: { house.desc }
+                    City: {house.city}<br />
+                    Type: {house.type}<br />
+                    Price: {house.price}<br />
+                    Description: {house.desc}
                 </Typography>
             </Dialog>
         </div>

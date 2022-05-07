@@ -9,10 +9,10 @@ export default function Bar() {
     const navigate = useNavigate();
 
     const handleProfileClick = () => {
-        navigate("/Profile");
+        navigate("/profile");
     };
     const handleTitleClick = () => {
-        navigate("/");
+        navigate("/house");
     };
 
     return (
