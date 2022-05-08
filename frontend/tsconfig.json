@@ -17,14 +17,14 @@
         "moduleResolution": "node",
         "resolveJsonModule": true,
         "paths": {
-            "@modules/*": [
-                "./modules/*"
+            "@components/*": [
+                "./components/*"
             ],
-            "@ui/*": [
-                "./ui/*"
+            "@pages/*": [
+                "./pages/*"
             ],
-            "@lib/*": [
-                "./lib/*"
+            "@stores/*": [
+                "./stores/*"
             ],
         },
         // Language and Environment
@@ -49,13 +49,10 @@
         "allowJs": true
     },
     "include": [
-        "next-env.d.ts",
         "src/**/*.ts",
         "src/**/*.tsx"
     ],
     "exclude": [
-        "nginx",
-        ".next",
         "node_modules"
     ]
 }

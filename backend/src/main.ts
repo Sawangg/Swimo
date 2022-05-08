@@ -19,6 +19,8 @@ async function bootstrap() {
             saveUninitialized: false,
             cookie: {
                 maxAge: 3600000,
+                sameSite: "strict",
+                path: "/",
             },
             store: new TypeormStore().connect(getConnection().getRepository(SessionEntity)),
         }),
@@ -27,9 +29,11 @@ async function bootstrap() {
     app.setGlobalPrefix("/api");
     app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
+    app.enableCors({ credentials: true });
+    app.use(helmet());
+
     app.use(passport.initialize());
     app.use(passport.session());
-    app.use(helmet());
 
     await app.listen(3001);
 }

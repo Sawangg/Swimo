@@ -1,3 +1,4 @@
+import axios from "axios";
 import create from "zustand";
 
 interface LoginUser {
@@ -10,7 +11,9 @@ interface LoginUser {
 interface LoginState {
     user: LoginUser;
     isLogged: boolean;
-    setLoggedUser: (id: number, nom: string, prenom: string, isAdmin: boolean) => void
+    getUserStatus: () => Promise<void>;
+    setLoggedUser: (username: string, password: string) => Promise<boolean>;
+    resetLoggerUser: () => Promise<void>;
 }
 
 export const useLoginStore = create<LoginState>(set => ({
@@ -21,15 +24,39 @@ export const useLoginStore = create<LoginState>(set => ({
         isAdmin: false,
     },
     isLogged: false,
-    setLoggedUser: (id: number, nom: string, prenom: string, isAdmin: boolean) => {
-        set({
-            user: {
-                id,
-                nom,
-                prenom,
-                isAdmin,
-            },
-            isLogged: true,
-        });
+    getUserStatus: async () => {
+        const rep = await axios.get("http://localhost:3001/api/auth", { withCredentials: true });
+        if (rep.status === 200) {
+            set({
+                user: {
+                    id: rep.data.id,
+                    nom: rep.data.nom,
+                    prenom: rep.data.prenom,
+                    isAdmin: rep.data.isAdmin,
+                },
+                isLogged: true,
+            });
+        }
+    },
+    setLoggedUser: async (username: string, password: string) => {
+        const rep = await axios.post("http://localhost:3001/api/auth/login", { username, password }, { withCredentials: true });
+        if (rep.status === 201) {
+            set({
+                user: {
+                    id: rep.data.id,
+                    nom: rep.data.nom,
+                    prenom: rep.data.prenom,
+                    isAdmin: rep.data.isAdmin,
+                },
+                isLogged: true,
+            });
+            return true;
+        } else {
+            return false;
+        }
+    },
+    resetLoggerUser: async () => {
+        const rep = await axios.delete("http://localhost:3001/api/auth/logout", { withCredentials: true });
+        if (rep.status === 200) set({ isLogged: false });
     },
 }));

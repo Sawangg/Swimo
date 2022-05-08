@@ -1,4 +1,3 @@
-import { Exclude } from "class-transformer";
 import { IsBooleanString, IsEmail, IsNotEmpty, IsOptional, MaxLength, MinLength } from "class-validator";
 
 export class CreateCustomerDto {
@@ -17,7 +16,6 @@ export class CreateCustomerDto {
     @MaxLength(50)
     login: string;
 
-    @Exclude()
     @IsNotEmpty()
     @MinLength(6)
     @MaxLength(50)
