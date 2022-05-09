@@ -2,7 +2,7 @@
 import { useState } from "react";
 
 // Import material-ui
-import { Card, CardContent, Typography, Dialog, AppBar, Toolbar, IconButton } from "@mui/material";
+import { Typography, Dialog, AppBar, Toolbar, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 export interface House {
@@ -19,7 +19,6 @@ export interface House {
     nbParking: number;
     image: string;
     desc: string;
-
 }
 
 type HouseProps = {
@@ -30,20 +29,18 @@ export default function HouseCard({ house }: HouseProps) {
     const [dialogOpen, setDialogOpen] = useState(false);
 
     return (
-        <div>
-            <Card variant="outlined" onClick={() => setDialogOpen(true)}>
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                        {house.address}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        City: {house.city}<br />
-                        Type: {house.type}<br />
-                        Price: {house.price}<br />
-                        Description: {house.desc}
-                    </Typography>
-                </CardContent>
-            </Card>
+        <>
+            <div className="flex flex-col items-center justify-center px-10 overflow-hidden bg-white rounded-lg shadow h-28">
+                <Typography gutterBottom variant="h5" component="div">
+                    {house.address}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    City: {house.city}<br />
+                    Type: {house.type}<br />
+                    Price: {house.price}<br />
+                    Description: {house.desc}
+                </Typography>
+            </div>
 
             <Dialog fullScreen open={dialogOpen}>
                 <AppBar sx={{ position: "relative" }}>
@@ -63,6 +60,6 @@ export default function HouseCard({ house }: HouseProps) {
                     Description: {house.desc}
                 </Typography>
             </Dialog>
-        </div>
+        </>
     );
 }
