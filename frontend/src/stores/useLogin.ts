@@ -5,24 +5,24 @@ interface LoginUser {
     id: number;
     nom: string;
     prenom: string;
-    isAdmin: boolean;
 }
 
-interface LoginState {
+interface LoginStore {
     user: LoginUser;
+    isAdmin: boolean;
     isLogged: boolean;
     getUserStatus: () => Promise<void>;
     setLoggedUser: (username: string, password: string) => Promise<boolean>;
     resetLoggerUser: () => Promise<void>;
 }
 
-export const useLoginStore = create<LoginState>(set => ({
+export const useLoginStore = create<LoginStore>(set => ({
     user: {
         id: 0,
         nom: "",
         prenom: "",
-        isAdmin: false,
     },
+    isAdmin: false,
     isLogged: false,
     getUserStatus: async () => {
         const rep = await axios.get("http://localhost:3001/api/auth", { withCredentials: true });
@@ -32,8 +32,8 @@ export const useLoginStore = create<LoginState>(set => ({
                     id: rep.data.id,
                     nom: rep.data.nom,
                     prenom: rep.data.prenom,
-                    isAdmin: rep.data.isAdmin,
                 },
+                isAdmin: rep.data.isAdmin,
                 isLogged: true,
             });
         }
@@ -46,8 +46,8 @@ export const useLoginStore = create<LoginState>(set => ({
                     id: rep.data.id,
                     nom: rep.data.nom,
                     prenom: rep.data.prenom,
-                    isAdmin: rep.data.isAdmin,
                 },
+                isAdmin: rep.data.isAdmin,
                 isLogged: true,
             });
             return true;

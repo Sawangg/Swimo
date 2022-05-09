@@ -1,14 +1,15 @@
 import { CssBaseline } from "@mui/material";
-import Landing from "@pages/Landing";
 import { Suspense, useEffect } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useLoginStore } from "stores/useLogin";
-import Spinner from "./components/Spinner";
+import Landing from "./pages/Landing";
 import Home from "./pages/Home";
 import Offer from "./pages/Offer";
 import Profile from "./pages/Profile";
 import Visit from "./pages/Visit";
+import Login from "./pages/Login";
+import { Spinner } from "ui/Spinner";
 
 export default function App() {
     const { getUserStatus } = useLoginStore();
@@ -23,7 +24,7 @@ export default function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Landing />} />
-                    <Route path="/login" element={<Landing />} />
+                    <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Landing />} />
 
                     {/* <Route element={<ProtectedRoute isLogged={isLogged} />}> */}
