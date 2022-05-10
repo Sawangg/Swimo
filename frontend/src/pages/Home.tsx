@@ -1,4 +1,4 @@
-import HouseCard, { House } from "modules/HouseCard";
+import { SwipeCard, House } from "modules/SwipeCard";
 import useSWR from "swr";
 
 export default function Home() {
@@ -9,7 +9,7 @@ export default function Home() {
             {
                 data.map((house: House) => (
                     <div key={house.id}>
-                        <HouseCard house={house} />
+                        <SwipeCard house={house} />
                     </div>
                 ))
             }

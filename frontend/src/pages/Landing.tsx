@@ -14,7 +14,7 @@ export default function Landing() {
 
             </div>
 
-            <div className="flex flex-col justify-center items-center w-screen gap-3">
+            <div className="fixed flex flex-col justify-center items-center w-screen h-screen gap-3">
                 <h1 className="text-primary-200">Get Started</h1>
                 <Button color="secondary" onClick={() => navigate("/register")}>Register</Button>
                 <Button color="transparent" onClick={() => setOpen(!open)}>Login</Button>

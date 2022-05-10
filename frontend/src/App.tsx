@@ -24,7 +24,7 @@ export default function App() {
                     <Route path="/register" element={<Landing />} />
 
                     {/* <Route element={<ProtectedRoute isLogged={isLogged} />}> */}
-                    <Route path="/house" element={
+                    <Route path="/home" element={
                         <ErrorBoundary fallback={<h1>error</h1>}>
                             <Suspense fallback={<Spinner />}>
                                 <Home />

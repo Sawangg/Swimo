@@ -12,7 +12,7 @@ export default function Login() {
     const connectClick = async () => {
         const loggedSuccessfully = await setLoggedUser(loginState.user, loginState.pwd);
         if (loggedSuccessfully) {
-            navigate("/house");
+            navigate("/home");
             setLoginState({ user: "", pwd: "" });
         }
     };
