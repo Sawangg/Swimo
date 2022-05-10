@@ -1,8 +1,11 @@
 module.exports = {
     content: [
-        "./src/**/*.{js,jsx,ts,tsx}",
+        "./src/**/*.tsx",
     ],
     theme: {
+        fontFamily: {
+            inter: ["Inter", "sans-serif"],
+        },
         colors: {
             primary: {
                 DEFAULT: "#2A669F",
@@ -16,6 +19,12 @@ module.exports = {
                 700: "#1B3366",
                 800: "#14204A",
                 900: "#0C102E",
+            },
+            white: {
+                DEFAULT: "#FFFFFF",
+            },
+            dark: {
+                DEFAULT: "#00000050",
             },
         },
     },

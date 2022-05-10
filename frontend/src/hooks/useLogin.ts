@@ -16,7 +16,7 @@ interface LoginStore {
     resetLoggerUser: () => Promise<void>;
 }
 
-export const useLoginStore = create<LoginStore>(set => ({
+export const useLogin = create<LoginStore>(set => ({
     user: {
         id: 0,
         nom: "",
