@@ -17,7 +17,7 @@ import { SessionEntity } from "./auth/entities/Session.entity";
         TypeOrmModule.forRoot({
             type: "mariadb",
             host: process.env.NODE_ENV !== "production" ? "localhost" : process.env.DB_HOST,
-            port: 3306,
+            port: parseInt(process.env.DB_PORT),
             username: "root",
             password: process.env.DB_PASSWORD,
             database: "agencedb",
