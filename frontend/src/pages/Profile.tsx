@@ -1,14 +1,10 @@
-// Import components
-import Bar from "components/Bar";
-
-// Import material-ui
-import { Button, Typography } from "@mui/material";
-import { useLoginStore } from "../stores/useLogin";
+import { useLogin } from "../hooks/useLogin";
 import { useNavigate } from "react-router-dom";
+import { Button } from "ui/Button";
 
 export default function Pofile() {
     const navigate = useNavigate();
-    const { user, resetLoggerUser } = useLoginStore();
+    const { user, resetLoggerUser } = useLogin();
 
     const disconnect = () => {
         resetLoggerUser();
@@ -17,11 +13,10 @@ export default function Pofile() {
 
     return (
         <>
-            <Bar />
-            <Typography gutterBottom variant="h5" align="center">
+            <div>
                 {user.prenom} {user.nom}
-            </Typography>
-            <Button type="submit" variant="outlined" onClick={() => disconnect()}>Déconnexion</Button>
+            </div>
+            <Button onClick={() => disconnect()}>Déconnexion</Button>
         </>
     );
 }

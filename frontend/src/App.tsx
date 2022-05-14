@@ -1,16 +1,17 @@
-import { CssBaseline } from "@mui/material";
-import Login from "pages/Login";
 import { Suspense, useEffect } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useLoginStore } from "stores/useLogin";
+import { useLogin } from "hooks/useLogin";
+import Landing from "./pages/Landing";
 import Home from "./pages/Home";
 import Offer from "./pages/Offer";
 import Profile from "./pages/Profile";
 import Visit from "./pages/Visit";
+import Error from "./modules/Error";
+import { Spinner } from "ui/Spinner";
 
 export default function App() {
-    const { getUserStatus } = useLoginStore();
+    const { getUserStatus } = useLogin();
 
     useEffect(() => {
         getUserStatus();
@@ -18,20 +19,18 @@ export default function App() {
 
     return (
         <>
-            <CssBaseline />
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<Login />} />
+                    <Route path="/" element={<Landing />} />
+                    <Route path="/register" element={<Landing />} />
 
-                    {/* <Route element={<ProtectedRoute isLogged={isLogged} />}> */}
-                        <Route path="/house" element={
-                            <ErrorBoundary fallback={<h1>error</h1>}>
-                                <Suspense fallback={<h1>loading</h1>}>
-                                    <Home />
-                                </Suspense>
-                            </ErrorBoundary>
-                        } />
-                    {/* </Route> */}
+                    <Route path="/home" element={
+                        <ErrorBoundary FallbackComponent={Error}>
+                            <Suspense fallback={<Spinner />}>
+                                <Home />
+                            </Suspense>
+                        </ErrorBoundary>
+                    } />
 
                     <Route path="/offer" element={<Offer />} />
                     <Route path="/profile" element={<Profile />} />

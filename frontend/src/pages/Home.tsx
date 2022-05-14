@@ -1,28 +1,16 @@
-// Import components
-import Bar from "components/Bar";
-
-// Import material-ui
-import { Box, Grid } from "@mui/material";
-import HouseCard, { House } from "components/HouseCard";
+import { SwipeCard, House } from "modules/SwipeCard";
+import axios from "axios";
 import useSWR from "swr";
 
 export default function Home() {
-    const { data } = useSWR("http://localhost:3001/api/housing", { suspense: true, fetcher: (...args) => fetch(...args).then(res => res.json()) });
+    const fetcher = (url: string) => axios.get(url, { withCredentials: true }).then(res => res.data);
+    const { data } = useSWR("http://192.168.1.22:3001/api/housing", { suspense: true, fetcher });
 
     return (
-        <>
-            <Bar />
-            <Box m={1}>
-                <Grid container spacing={1}>
-                    {
-                        data.map((house: House) => (
-                            <Grid item xs={4} key={house.id}>
-                                <HouseCard house={house} />
-                            </Grid>
-                        ))
-                    }
-                </Grid>
-            </Box>
-        </>
+        <div className="flex w-screen h-screen justify-center items-center">
+            {data.map((house: House) => (
+                <SwipeCard key={house.id} house={house} />
+            ))}
+        </div>
     );
 }
