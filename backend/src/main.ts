@@ -29,7 +29,7 @@ async function bootstrap() {
     app.setGlobalPrefix("/api");
     app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
-    app.enableCors({ credentials: true });
+    app.enableCors({ origin: ["http://localhost:3000"], credentials: true });
     app.use(helmet());
 
     app.use(passport.initialize());

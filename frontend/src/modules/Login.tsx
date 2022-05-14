@@ -14,6 +14,8 @@ export default function Login() {
         if (loggedSuccessfully) {
             navigate("/home");
             setLoginState({ user: "", pwd: "" });
+        } else {
+            setLoginState({ user: loginState.user, pwd: "" });
         }
     };
 
