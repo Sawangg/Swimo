@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { HousingImg } from "./housingImg.entity";
 
 @Entity()
 export class Housing {
@@ -35,8 +36,8 @@ export class Housing {
     @Column({ default: 1 })
     nbParking: number;
 
-    @Column()
-    image: string;
+    @OneToMany(() => HousingImg, (housingImg: HousingImg) => housingImg.house, { onDelete: "CASCADE" })
+    photos: HousingImg[];
 
     @Column()
     desc: string;

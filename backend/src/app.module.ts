@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { ConfigModule } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { CustomerModule } from "./customers/customer.module";
 import { VisitsModule } from "./visits/visits.module";
 import { HousingModule } from "./housing/housing.module";
@@ -14,17 +14,21 @@ import { SessionEntity } from "./auth/entities/Session.entity";
     imports: [
         ConfigModule.forRoot({ isGlobal: true, cache: true }),
         PassportModule.register({ session: true }),
-        TypeOrmModule.forRoot({
-            type: "mariadb",
-            host: process.env.NODE_ENV !== "production" ? "localhost" : process.env.DB_HOST,
-            port: parseInt(process.env.DB_PORT),
-            username: "root",
-            password: process.env.DB_PASSWORD,
-            database: "agencedb",
-            synchronize: process.env.NODE_ENV !== "production",
-            keepConnectionAlive: true,
-            entities: [SessionEntity],
-            autoLoadEntities: true,
+        TypeOrmModule.forRootAsync({
+            imports: [ConfigModule],
+            useFactory: (configService: ConfigService) => ({
+                type: "postgres",
+                host: configService.get("DB_HOST"),
+                port: +configService.get<number>("DB_PORT"),
+                username: configService.get("DB_USERNAME"),
+                password: configService.get("DB_PASSWORD"),
+                database: configService.get("DB_NAME"),
+                entities: [SessionEntity],
+                synchronize: true,
+                autoLoadEntities: true,
+                keepConnectionAlive: true,
+            }),
+            inject: [ConfigService],
         }),
         AuthModule,
         CustomerModule,

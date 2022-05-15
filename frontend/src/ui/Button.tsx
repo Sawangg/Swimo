@@ -9,7 +9,7 @@ const sizeClassnames = {
 
 const colorClassnames = {
     primary:
-        "text-button bg-gradient-to-l from-primary-600 to-primary-400 transition duration-200 ease-in-out hover:bg-accent-hover disabled:text-accent-disabled disabled:bg-accent-hover",
+        "text-button text-primary-50 bg-gradient-to-l from-primary-600 to-primary-400 transition duration-200 ease-in-out hover:bg-accent-hover disabled:text-accent-disabled disabled:bg-accent-hover",
     secondary:
         "text-button bg-primary-500 hover:bg-primary-400 disabled:text-primary-300",
     "secondary-800":

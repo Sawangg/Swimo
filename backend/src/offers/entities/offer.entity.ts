@@ -11,7 +11,7 @@ export class Offer {
     @Column({ primary: true })
     date: Date;
 
-    @Column({ default: 0.3 })
+    @Column({ type: "float", default: 0.3 })
     commission: number;
 
     @Column({ default: "On going" })

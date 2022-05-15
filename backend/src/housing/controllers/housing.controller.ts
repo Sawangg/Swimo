@@ -1,22 +1,27 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Res } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, HttpStatus, NotFoundException, Param, Post, Res, UploadedFiles, UseInterceptors } from "@nestjs/common";
 import { CreateHousingDto } from "../dtos/createHousing.dto";
 import { HousingService } from "../services/housing.service";
+import { FilesInterceptor } from "@nestjs/platform-express";
 import type { Response } from "express";
 
 @Controller("housing")
 export class HousingController {
     constructor(private readonly housingService: HousingService) { }
 
-    @Get("/")
-    async getAll() {
-        const data = await this.housingService.findAll();
-        if (data.length > 0) return data;
-        else throw new HttpException("No housing found", HttpStatus.NOT_FOUND);
+    @Get("/random")
+    async getRandom() {
+        const data = await this.housingService.findRandom();
+        if (data) return data;
+        else throw new NotFoundException("No random housing found");
     }
 
     @Post("create")
-    createHousing(@Body() createHousing: CreateHousingDto) {
-        return this.housingService.createHousing(createHousing);
+    @UseInterceptors(FilesInterceptor("files"))
+    createHousing(@Body() createHousing: CreateHousingDto, @UploadedFiles() files: Array<Express.Multer.File>) {
+        if (!files || files.length === 0) return new BadRequestException();
+        const filesData: Array<string> = [];
+        files.forEach(file => filesData.push(`data:${file.mimetype};base64,${file.buffer.toString("base64")}`));
+        return this.housingService.createHousing(createHousing, filesData);
     }
 
     @Delete("/delete/:id")

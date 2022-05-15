@@ -1,4 +1,5 @@
-import { IsDateString, IsNotEmpty, IsNumberString, IsString, MaxLength, MinLength } from "class-validator";
+import { IsDateString, IsNotEmpty, IsNumberString, IsOptional, IsString, MaxLength, MinLength } from "class-validator";
+import type { HousingImg } from "../entities/housingImg.entity";
 
 export class CreateHousingDto {
     @IsNotEmpty()
@@ -36,9 +37,9 @@ export class CreateHousingDto {
     nbParking: number;
 
     @IsString()
-    image: string;
-
-    @IsString()
     @MinLength(1)
     desc: string;
+
+    @IsOptional()
+    photos: Array<HousingImg>;
 }

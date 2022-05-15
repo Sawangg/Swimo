@@ -34,4 +34,9 @@ export class CustomerService {
         const deleted = await this.customersRepository.delete(id);
         return deleted;
     }
+
+    async saveAvatar(id: string, mime: string, data: Buffer): Promise<Customer> {
+        await this.customersRepository.update(id, { avatar: `data:${mime};base64,${data.toString("base64")}` });
+        return this.findOne(+id);
+    }
 }
