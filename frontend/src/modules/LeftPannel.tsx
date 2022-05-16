@@ -15,11 +15,11 @@ export const LeftPannel: React.FC<LeftPannelProps> = () => {
     };
 
     return (
-        <div className="w-96 h-screen shadow-lg bg-white z-50">
+        <div className="w-1/5 h-screen shadow-lg bg-white z-50">
             <div className="flex gap-3 px-5 items-center h-20 bg-gradient-to-r from-primary-600 to-primary-400">
                 {user.avatar
                     ? <img className="cursor-pointer shadow rounded-full w-10 h-10 bg-primary-100" onClick={() => navigate("/profile")} src={user.avatar} />
-                    : <button type="button" className="bg-primary-50 shadow rounded-full w-12 h-12"></button>
+                    : <button type="button" className="bg-primary-50 shadow rounded-full w-12 h-12" onClick={() => navigate("/profile")} />
                 }
                 <p className="text-primary-50 font-bold">{user.prenom} {user.nom}</p>
                 <div className="flex flex-row gap-5 ml-auto">
@@ -47,8 +47,11 @@ export const LeftPannel: React.FC<LeftPannelProps> = () => {
                     </button>
                 </div>
             </div>
-            <div className="">
-
+            <div className="flex flex-col m-4">
+                <div className="flex flex-row gap-5 items-center justify-around">
+                    <button className="">Liked</button>
+                    <button className="">Messages</button>
+                </div>
             </div>
         </div>
     );

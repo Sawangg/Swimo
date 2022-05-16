@@ -1,6 +1,6 @@
 import { IsOptional, MaxLength, MinLength } from "class-validator";
 
-export class CreateCustomerDto {
+export class UpdateCustomerDto {
     @IsOptional()
     @MinLength(1)
     @MaxLength(50)

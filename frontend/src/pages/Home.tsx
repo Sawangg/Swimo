@@ -9,8 +9,7 @@ export default function Home() {
     const { house, setNewHouse } = useHouse();
 
     const fetcher = (url: string) => axios.get(url, { withCredentials: true }).then(res => res.data);
-    // Remove auto refresh
-    const { data } = useSWR("http://192.168.1.22:3001/api/housing/random", { suspense: true, revalidateOnFocus: false, fetcher });
+    const { data } = useSWR("http://localhost:3001/api/housing/random", { suspense: true, revalidateOnFocus: false, fetcher });
 
     useEffect(() => {
         if (data) setNewHouse(data);

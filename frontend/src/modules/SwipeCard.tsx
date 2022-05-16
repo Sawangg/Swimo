@@ -2,6 +2,7 @@ import React, { useState, DetailedHTMLProps, HTMLAttributes, useEffect } from "r
 import { to as interpolate, animated, useSpring } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 import { House } from "hooks/useHouse";
+import { useLogin } from "hooks/useLogin";
 
 export type SwipeCardProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
     house: House;
@@ -10,21 +11,20 @@ export type SwipeCardProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, H
 export const SwipeCard: React.FC<SwipeCardProps> = ({
     house,
 }) => {
+    const { user, sendLike } = useLogin();
     const [gone] = useState(() => new Set());
-    const [isLiked, setIsLiked] = useState(false);
     const [imgIdx, setImgIdx] = useState(0);
 
     const to = (i: number) => ({ x: 0, scale: 1, rot: -10 + Math.random() * 20, delay: i * 100 });
     const from = () => ({ x: 0, rot: 0, scale: 1.05 });
-    const trans = (r: number, s: number) => `rotateX(10deg) rotateY(${r / 10}deg) rotateZ(${r / 2}deg) scale(${s})`;
+    const trans = (_r: number, s: number) => `scale(${s})`;
 
     const [springValues, api] = useSpring((i: number) => ({ ...to(i), from: from() }));
     const bind = useDrag(({ event, args: [index], active, movement: [mx], direction: [xDir], velocity: [vx] }) => {
         event.preventDefault();
         const trigger = vx > 0.2;
         if (!active && trigger) {
-            if (xDir > 0) setIsLiked(true);
-            else if (xDir < 0) setIsLiked(false);
+            if (xDir > 0) sendLike(user.id, house.id);
             gone.add(index);
         }
         api.start(() => {
@@ -65,8 +65,6 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
             window.removeEventListener("keydown", handleArrows);
         };
     });
-
-    console.log(isLiked);
 
     return (
         <animated.div className="flex items-center justify-center will-change-transform select-none min-w-1/5 min-h-4/6 max-w-1/5 max-h-4/6 h-4/6 w-1/5 -z-50" style={{ x: springValues.x }}>

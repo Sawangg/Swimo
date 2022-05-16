@@ -8,13 +8,6 @@ import type { Response } from "express";
 export class HousingController {
     constructor(private readonly housingService: HousingService) { }
 
-    @Get("/random")
-    async getRandom() {
-        const data = await this.housingService.findRandom();
-        if (data) return data;
-        else throw new NotFoundException("No random housing found");
-    }
-
     @Post("create")
     @UseInterceptors(FilesInterceptor("files"))
     createHousing(@Body() createHousing: CreateHousingDto, @UploadedFiles() files: Array<Express.Multer.File>) {
@@ -22,6 +15,13 @@ export class HousingController {
         const filesData: Array<string> = [];
         files.forEach(file => filesData.push(`data:${file.mimetype};base64,${file.buffer.toString("base64")}`));
         return this.housingService.createHousing(createHousing, filesData);
+    }
+
+    @Get("/random")
+    async getRandom() {
+        const data = await this.housingService.findRandom();
+        if (data) return data;
+        else throw new NotFoundException("No random housing found");
     }
 
     @Delete("/delete/:id")
