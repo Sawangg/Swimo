@@ -27,6 +27,7 @@ import { SessionEntity } from "./auth/entities/Session.entity";
                 synchronize: true,
                 autoLoadEntities: true,
                 keepConnectionAlive: true,
+                logging: true,
             }),
             inject: [ConfigService],
         }),

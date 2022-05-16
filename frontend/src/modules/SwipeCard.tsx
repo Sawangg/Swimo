@@ -3,13 +3,16 @@ import { to as interpolate, animated, useSpring } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 import { House } from "hooks/useHouse";
 import { useLogin } from "hooks/useLogin";
+import image from "../assets/info.svg";
 
 export type SwipeCardProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
     house: House;
+    openProfile: () => void;
 }
 
 export const SwipeCard: React.FC<SwipeCardProps> = ({
     house,
+    openProfile,
 }) => {
     const { user, sendLike } = useLogin();
     const [gone] = useState(() => new Set());
@@ -24,7 +27,10 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
         event.preventDefault();
         const trigger = vx > 0.2;
         if (!active && trigger) {
-            if (xDir > 0) sendLike(user.id, house.id);
+            if (xDir > 0) {
+                sendLike(user.id, house.id);
+                openProfile();
+            }
             gone.add(index);
         }
         api.start(() => {
@@ -80,10 +86,14 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
                         ))}
                     </div>}
                 <div className="absolute bottom-0 left-0 w-full flex flex-col p-3">
-                    <div className="pl-4">
-                        <h1 className="text-white text-4xl font-bold pb-2">{house.address}</h1>
-                        <h2 className="text-white text-1xl">{house.city}</h2>
+                    <div className="flex flex-row items-center gap-x-40">
+                        <div className="pl-4">
+                            <h1 className="text-white text-4xl font-bold pb-2">{house.address}</h1>
+                            <h2 className="text-white text-1xl">{house.city}</h2>
+                        </div>
+                        <img className="cursor-pointer w-10 h-10" onClick={openProfile} src={image} />
                     </div>
+
                     <div className="w-full p-2 mt-6 flex flex-row gap-3 justify-around items-center">
                         <button type="button" className="flex justify-center items-center select-none border-dislike-400 shadow-lg border-2 p-2 rounded-full
                             w-14 h-14 focus:outline-none focus:shadow-outline hover:scale-110"

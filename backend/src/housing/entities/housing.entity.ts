@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany } from "typeorm";
 import { HousingImg } from "./housingImg.entity";
+import { Customer } from "src/customers/entities/customer.entity";
 
 @Entity()
 export class Housing {
@@ -38,6 +39,9 @@ export class Housing {
 
     @OneToMany(() => HousingImg, (housingImg: HousingImg) => housingImg.house, { onDelete: "CASCADE" })
     photos: HousingImg[];
+
+    @ManyToMany(() => Customer, (customer: Customer) => customer.id, { onDelete: "CASCADE" })
+    hasLiked: Array<Customer>;
 
     @Column()
     desc: string;

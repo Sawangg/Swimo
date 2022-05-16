@@ -1,5 +1,6 @@
 import { Exclude } from "class-transformer";
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Housing } from "src/housing/entities/housing.entity";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from "typeorm";
 
 @Entity()
 export class Customer {
@@ -20,6 +21,9 @@ export class Customer {
 
     @Column({ name: "avatar", type: "text", nullable: true })
     avatar?: string;
+
+    @ManyToMany(() => Housing, (housing: Housing) => housing.id, { onDelete: "CASCADE" })
+    likes: Array<Housing>;
 
     @Column({ name: "admin", default: false, nullable: false })
     isAdmin: boolean;

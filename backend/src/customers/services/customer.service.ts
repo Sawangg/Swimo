@@ -1,7 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Customer } from "src/customers/entities/customer.entity";
-import { Like } from "src/customers/entities/like.entity";
 import { encodePassword } from "src/utils/password";
 import type { DeleteResult, Repository } from "typeorm";
 import type { CreateCustomerDto } from "../dtos/CreateCustomer.dto";
@@ -12,8 +11,6 @@ export class CustomerService {
     constructor(
         @InjectRepository(Customer)
         private readonly customersRepository: Repository<Customer>,
-        @InjectRepository(Like)
-        private readonly likeRepository: Repository<Like>,
     ) { }
 
     createCustomer(createCustomerDto: CreateCustomerDto) {
@@ -23,13 +20,12 @@ export class CustomerService {
     }
 
     createLike(createLike: CreateLikeDto) {
-        const newLike = this.likeRepository.create(createLike);
-        return this.likeRepository.save(newLike);
+        return this.customersRepository.update(createLike.customerId, { });
     }
 
     async findLikes(id: number) {
-        const result = await this.likeRepository.createQueryBuilder("like")
-            .leftJoinAndMapMany("housing.photos", "housing.photos", "photo")
+        const result = await this.customersRepository.createQueryBuilder("like")
+            .innerJoinAndSelect("like.customer", "customer")
             .where("like.customerId = :id", { id })
             .getMany();
         return result[0];

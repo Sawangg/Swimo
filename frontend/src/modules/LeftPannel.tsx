@@ -1,11 +1,13 @@
-import React, { DetailedHTMLProps, HTMLAttributes } from "react";
+import React, { DetailedHTMLProps, HTMLAttributes, useState } from "react";
 import { useLogin } from "hooks/useLogin";
 import { useNavigate } from "react-router-dom";
+import { Liked } from "./Liked";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type LeftPannelProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {}
 
 export const LeftPannel: React.FC<LeftPannelProps> = () => {
+    const [currentContent, setCurrentContent] = useState("like");
     const { user, resetLoggerUser } = useLogin();
     const navigate = useNavigate();
 
@@ -49,9 +51,12 @@ export const LeftPannel: React.FC<LeftPannelProps> = () => {
             </div>
             <div className="flex flex-col m-4">
                 <div className="flex flex-row gap-5 items-center justify-around">
-                    <button className="">Liked</button>
-                    <button className="">Messages</button>
+                    <button className="" onClick={() => setCurrentContent("like")}>Liked</button>
+                    <button className="" onClick={() => setCurrentContent("messages")}>Messages</button>
                 </div>
+                {currentContent === "like" &&
+                    <Liked />
+                }
             </div>
         </div>
     );

@@ -40,7 +40,7 @@ export class CustomerController {
     }
 
     @UseGuards(AuthenticatedGuard)
-    @Get("/")
+    @Get("likes")
     getLikes(@Request() req: any) {
         return this.customerService.findLikes(req.user.id);
     }
