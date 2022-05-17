@@ -3,7 +3,7 @@ import { to as interpolate, animated, useSpring } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 import { House } from "hooks/useHouse";
 import { useLogin } from "hooks/useLogin";
-import image from "../assets/info.svg";
+import infoSvg from "../assets/info.svg";
 
 export type SwipeCardProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
     house: House;
@@ -74,29 +74,47 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
 
     return (
         <animated.div className="flex items-center justify-center will-change-transform select-none min-w-1/5 min-h-4/6 max-w-1/5 max-h-4/6 h-4/6 w-1/5 -z-50" style={{ x: springValues.x }}>
-            <animated.div className="touch-none bg-no-repeat w-full h-full border-10 will-change-transform cursor-grab p-2 bg-white rounded-lg shadow-lg"
+            <animated.div className="touch-none bg-no-repeat w-full h-full border-10 will-change-transform cursor-grab rounded-lg shadow-lg"
                 style={{ transform: interpolate([springValues.rot, springValues.scale], trans) }}
                 {...bind()}
             >
-                <img className="select-none touch-none rounded-lg min-h-full min-w-full h-full w-full max-h-full max-w-full filter brightness-75" src={house.photos[imgIdx]} draggable="false" onMouseDown={e => e.preventDefault()} onClick={() => handleClick()} />
+                <div className="absolute filter-black w-full h-full rounded-lg" />
+                <img className="select-none touch-none rounded-lg min-h-full min-w-full h-full w-full max-h-full max-w-full" src={house.photos[imgIdx]} draggable="false" onMouseDown={e => e.preventDefault()} onClick={() => handleClick()} />
                 {house.photos.length > 1 &&
                     <div className="absolute top-4 flex flex-row gap-4 pl-2">
                         {house.photos.map((_photo, key) => (
                             <button key={key} type="button" className="rounded-lg bg-dark w-14 h-1 focus:bg-white" onClick={() => setImgIdx(key)} />
                         ))}
                     </div>}
+
                 <div className="absolute bottom-0 left-0 w-full flex flex-col p-3">
-                    <div className="flex flex-row items-center gap-x-40">
+                    <div className="flex flex-row items-center">
                         <div className="pl-4">
-                            <h1 className="text-white text-4xl font-bold pb-2">{house.address}</h1>
-                            <h2 className="text-white text-1xl">{house.city}</h2>
+                            <h1 className="text-white text-3xl font-bold pb-2">{house.title}</h1>
+                            <h2 className="text-white text-xl">{house.city}</h2>
                         </div>
-                        <img className="cursor-pointer w-10 h-10" onClick={openProfile} src={image} />
+                        <img className="cursor-pointer w-8 h-8 ml-auto mr-2" onClick={openProfile} src={infoSvg} />
                     </div>
 
-                    <div className="w-full p-2 mt-6 flex flex-row gap-3 justify-around items-center">
-                        <button type="button" className="flex justify-center items-center select-none border-dislike-400 shadow-lg border-2 p-2 rounded-full
-                            w-14 h-14 focus:outline-none focus:shadow-outline hover:scale-110"
+                    {house.tags.length > 0 &&
+                        <div className="flex flex-row gap-3 items-center justify-center mt-3">
+                            {house.tags.map((tag, key) => {
+                                if (key === 0) {
+                                    return (
+                                        <div className="text-white text-xs rounded-full bg-gradient-to-r from-primary-600 to-primary-400 py-1 px-3" key={key}>{tag}</div>
+                                    );
+                                } else {
+                                    return (
+                                        <div className="text-white text-xs rounded-full bg-dark py-1 px-3" key={key}>{tag}</div>
+                                    );
+                                }
+                            })}
+                        </div>
+                    }
+
+                    <div className="w-full p-2 mt-3 flex flex-row gap-3 justify-around items-center">
+                        <button type="button" className="flex justify-center items-center select-none border-dislike-400 shadow-lg border-2 p-2 mb-1 rounded-full
+                            w-12 h-12 focus:outline-none focus:shadow-outline"
                             onClick={() => ejectCard(-1)}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#9F2A2A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-x">
@@ -105,7 +123,7 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
                             </svg>
                         </button>
                         <button type="button" className="flex justify-center items-center select-none border-like shadow-lg border-2 p-2 rounded-full
-                            w-14 h-14 focus:outline-none focus:shadow-outline hover:scale-110"
+                            w-12 h-12 focus:outline-none focus:shadow-outline"
                             onClick={() => ejectCard(1)}
                         >
                             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="#2B9E4A" viewBox="0 0 490.4 490.4">

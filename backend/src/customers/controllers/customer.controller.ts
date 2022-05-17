@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, HttpStatus, Param, Post, Res, UploadedFile, UseGuards, UseInterceptors, Request, BadRequestException, ClassSerializerInterceptor, Get } from "@nestjs/common";
+import { Body, Controller, Delete, HttpStatus, Param, Post, Res, UploadedFile, UseGuards, UseInterceptors, Request, ClassSerializerInterceptor, Get } from "@nestjs/common";
 import { CustomerService } from "../services/customer.service";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { CreateCustomerDto } from "../dtos/CreateCustomer.dto";
@@ -6,6 +6,7 @@ import { CreateLikeDto } from "../dtos/CreateLike.dto";
 import { AuthenticatedGuard } from "src/auth/utils/LocalGuard";
 import { SerializedCustomer } from "../entities/customer.entity";
 import type { Response } from "express";
+import type { UpdateCustomerDto } from "../dtos/UpdateCustomer.dto";
 
 @Controller("customer")
 export class CustomerController {
@@ -27,10 +28,9 @@ export class CustomerController {
     @UseGuards(AuthenticatedGuard)
     @UseInterceptors(ClassSerializerInterceptor)
     @UseInterceptors(FileInterceptor("file"))
-    @Post("avatar/upload")
-    async uploadAvatar(@Request() req: any, @UploadedFile() file: Express.Multer.File): Promise<SerializedCustomer | BadRequestException> {
-        if (!file) return new BadRequestException();
-        const customer = await this.customerService.saveAvatar(req.user.id, file.mimetype, file.buffer);
+    @Post("update")
+    async uploadAvatar(@Request() req: any, @Body() body: UpdateCustomerDto, @UploadedFile() file: Express.Multer.File): Promise<SerializedCustomer> {
+        const customer = await this.customerService.updateCustomer(+req.user.id, body, file);
         return new SerializedCustomer(customer);
     }
 

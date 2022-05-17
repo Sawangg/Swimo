@@ -2,7 +2,7 @@ import axios from "axios";
 import create from "zustand";
 import { House } from "./useHouse";
 
-interface LoginUser {
+export interface LoginUser {
     id: number;
     nom: string;
     prenom: string;
@@ -17,7 +17,7 @@ interface LoginStore {
     getUserStatus: () => Promise<void>;
     setLoggedUser: (username: string, password: string) => Promise<boolean>;
     resetLoggerUser: () => Promise<void>;
-    sendAvatar: (formData: FormData) => Promise<void>;
+    updateUser: (formData: FormData) => Promise<void>;
     sendLike: (userId: number, houseId: number) => Promise<void>;
 }
 
@@ -68,8 +68,8 @@ export const useLogin = create<LoginStore>(set => ({
         const rep = await axios.delete("http://localhost:3001/api/auth/logout", { withCredentials: true });
         if (rep.status === 200) set({ isLogged: false });
     },
-    sendAvatar: async formData => {
-        const rep = await axios.post("http://localhost:3001/api/customer/avatar/upload", formData, { withCredentials: true });
+    updateUser: async formData => {
+        const rep = await axios.post("http://localhost:3001/api/customer/update", formData, { withCredentials: true });
         if (rep.status === 201) {
             set({
                 user: {

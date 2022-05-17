@@ -5,6 +5,7 @@ import { encodePassword } from "src/utils/password";
 import type { DeleteResult, Repository } from "typeorm";
 import type { CreateCustomerDto } from "../dtos/CreateCustomer.dto";
 import type { CreateLikeDto } from "../dtos/CreateLike.dto";
+import type { UpdateCustomerDto } from "../dtos/UpdateCustomer.dto";
 
 @Injectable()
 export class CustomerService {
@@ -48,8 +49,9 @@ export class CustomerService {
         return deleted;
     }
 
-    async saveAvatar(id: string, mime: string, data: Buffer): Promise<Customer> {
-        await this.customersRepository.update(id, { avatar: `data:${mime};base64,${data.toString("base64")}` });
-        return this.findOne(+id);
+    async updateCustomer(id: number, data: UpdateCustomerDto, file: Express.Multer.File): Promise<Customer> {
+        if (!file) await this.customersRepository.save({ id, nom: data.nom, prenom: data.prenom });
+        else await this.customersRepository.save({ id, nom: data.nom, prenom: data.prenom, avatar: `data:${file.mimetype};base64,${file.buffer.toString("base64")}` });
+        return this.findOne(id);
     }
 }

@@ -19,10 +19,16 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-img, img.drag {
+img,
+img.drag {
     -webkit-user-drag: none;
     -khtml-user-drag: none;
     -moz-user-drag: none;
     -o-user-drag: none;
     user-select: none;
+}
+
+.filter-black {
+    background: rgb(139, 137, 137);
+    background: linear-gradient(180deg, rgba(139, 137, 137, 0.08454719778536413) 48%, rgba(15, 15, 15, 1) 88%, rgba(0, 0, 0, 1) 100%);
 }

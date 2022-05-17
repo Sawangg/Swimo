@@ -5,7 +5,7 @@ export class CreateHousingDto {
     @IsNotEmpty()
     @MinLength(1)
     @MaxLength(99)
-    address: string;
+    title: string;
 
     @IsNotEmpty()
     @MinLength(1)
@@ -42,4 +42,8 @@ export class CreateHousingDto {
 
     @IsOptional()
     photos: Array<HousingImg>;
+
+    @IsOptional()
+    @IsString({ each: true })
+    tags: Array<string>;
 }

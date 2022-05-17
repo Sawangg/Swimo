@@ -7,7 +7,7 @@ export type LikedProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLD
 
 export const Liked: React.FC<LikedProps> = () => {
     const fetcher = (url: string) => axios.get(url, { withCredentials: true }).then(res => res.data);
-    const { data, error } = useSWR("http://localhost:3001/api/customer/likes", { revalidateOnFocus: false, fetcher });
+    const { data, error } = useSWR("http://localhost:3001/api/customer/like", { revalidateOnFocus: false, fetcher });
 
     return (
         <div className="mt-4 h-96 flex items-center justify-center">

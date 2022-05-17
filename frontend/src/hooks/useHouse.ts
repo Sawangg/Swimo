@@ -2,7 +2,7 @@ import create from "zustand";
 
 export interface House {
     id: number;
-    address: string;
+    title: string;
     ownerName: string;
     type: string;
     nbRoom: number;
@@ -14,6 +14,7 @@ export interface House {
     nbParking: number;
     desc: string;
     photos: Array<string>;
+    tags: Array<string>;
 }
 
 interface HouseStore {
@@ -24,7 +25,7 @@ interface HouseStore {
 export const useHouse = create<HouseStore>(set => ({
     house: {
         id: 0,
-        address: "",
+        title: "",
         ownerName: "",
         type: "",
         nbRoom: 0,
@@ -36,13 +37,14 @@ export const useHouse = create<HouseStore>(set => ({
         nbParking: 0,
         desc: "",
         photos: [],
+        tags: [],
     },
 
     setNewHouse: (house: House) => {
         set({
             house: {
                 id: house.id,
-                address: house.address,
+                title: house.title,
                 ownerName: house.ownerName,
                 type: house.type,
                 nbRoom: house.nbRoom,
@@ -54,6 +56,7 @@ export const useHouse = create<HouseStore>(set => ({
                 nbParking: house.nbParking,
                 desc: house.desc,
                 photos: house.photos,
+                tags: house.tags,
             },
         });
     },

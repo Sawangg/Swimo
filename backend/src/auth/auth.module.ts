@@ -6,9 +6,10 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { Customer } from "src/customers/entities/customer.entity";
 import { LocalStrategy } from "./utils/LocalStrategy";
 import { SessionSerializer } from "./utils/SessionSerializer";
+import { CustomerModule } from "src/customers/customer.module";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Customer])],
+    imports: [TypeOrmModule.forFeature([Customer]), CustomerModule],
     controllers: [AuthController],
     providers: [
         {

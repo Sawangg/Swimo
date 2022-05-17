@@ -54,9 +54,7 @@ export const LeftPannel: React.FC<LeftPannelProps> = () => {
                     <button className="" onClick={() => setCurrentContent("like")}>Liked</button>
                     <button className="" onClick={() => setCurrentContent("messages")}>Messages</button>
                 </div>
-                {currentContent === "like" &&
-                    <Liked />
-                }
+                {currentContent === "like" && <Liked />}
             </div>
         </div>
     );

@@ -7,8 +7,8 @@ export class Housing {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ unique: true })
-    address: string;
+    @Column()
+    title: string;
 
     @Column()
     ownerName: string;
@@ -34,15 +34,18 @@ export class Housing {
     @Column({ default: "Paris" })
     city: string;
 
-    @Column({ default: 1 })
+    @Column({ default: 0 })
     nbParking: number;
+
+    @Column()
+    desc: string;
+
+    @Column({ type: "varchar", array: true, default: [] })
+    tags: string[];
 
     @OneToMany(() => HousingImg, (housingImg: HousingImg) => housingImg.house, { onDelete: "CASCADE" })
     photos: HousingImg[];
 
     @ManyToMany(() => Customer, (customer: Customer) => customer.id, { onDelete: "CASCADE" })
-    hasLiked: Array<Customer>;
-
-    @Column()
-    desc: string;
+    hasLiked?: Array<Customer>;
 }

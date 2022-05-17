@@ -53,6 +53,7 @@ module.exports = {
             dark: {
                 DEFAULT: "#00000050",
             },
+            transparent: "transparent",
         },
     },
     plugins: [],
