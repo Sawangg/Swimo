@@ -1,3 +1,3 @@
-# BD
+# Agence BD
 
-Projet en ReactJS (TypeScript), NestJS, Docker et MariaDB
+Projet en ReactJS (TypeScript), NestJS, Docker et PostgreSQL
