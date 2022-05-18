@@ -9,7 +9,7 @@ export interface LoginUser {
     avatar: string | undefined;
 }
 
-interface LoginStore {
+type LoginStore = {
     user: LoginUser;
     liked: Array<House>;
     isAdmin: boolean;
@@ -18,7 +18,6 @@ interface LoginStore {
     setLoggedUser: (username: string, password: string) => Promise<boolean>;
     resetLoggerUser: () => Promise<void>;
     updateUser: (formData: FormData) => Promise<void>;
-    sendLike: (userId: number, houseId: number) => Promise<void>;
 }
 
 export const useLogin = create<LoginStore>(set => ({
@@ -80,9 +79,5 @@ export const useLogin = create<LoginStore>(set => ({
                 },
             });
         }
-    },
-    sendLike: async (userId: number, houseId: number) => {
-        const rep = await axios.post("http://localhost:3001/api/customer/like", { customerId: userId, houseId }, { withCredentials: true });
-        if (rep.status === 201) console.log("created");
     },
 }));

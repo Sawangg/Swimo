@@ -1,12 +1,12 @@
-import { Body, Controller, Delete, HttpStatus, Param, Post, Res, UploadedFile, UseGuards, UseInterceptors, Request, ClassSerializerInterceptor, Get } from "@nestjs/common";
+import { Body, Controller, Delete, HttpStatus, Param, Post, Res, UploadedFile, UseGuards, UseInterceptors, Request, ClassSerializerInterceptor, Get, BadRequestException, NotFoundException } from "@nestjs/common";
 import { CustomerService } from "../services/customer.service";
 import { FileInterceptor } from "@nestjs/platform-express";
-import { CreateCustomerDto } from "../dtos/CreateCustomer.dto";
-import { CreateLikeDto } from "../dtos/CreateLike.dto";
 import { AuthenticatedGuard } from "src/auth/utils/LocalGuard";
 import { SerializedCustomer } from "../entities/customer.entity";
+import { CreateLikeDto } from "../dtos/CreateLike.dto";
+import { CreateCustomerDto } from "../dtos/CreateCustomer.dto";
+import { UpdateCustomerDto } from "../dtos/UpdateCustomer.dto";
 import type { Response } from "express";
-import type { UpdateCustomerDto } from "../dtos/UpdateCustomer.dto";
 
 @Controller("customer")
 export class CustomerController {
@@ -34,14 +34,25 @@ export class CustomerController {
         return new SerializedCustomer(customer);
     }
 
+    @UseGuards(AuthenticatedGuard)
     @Post("like")
-    setLike(@Body() createLikeDto: CreateLikeDto) {
-        return this.customerService.createLike(createLikeDto);
+    async setLike(@Request() req: any, @Body() createLikeDto: CreateLikeDto) {
+        const likes = await this.customerService.createLike(req.user.id, createLikeDto);
+        if (!likes || likes.length === 0) throw new BadRequestException();
+        return likes;
     }
 
     @UseGuards(AuthenticatedGuard)
     @Get("likes")
-    getLikes(@Request() req: any) {
-        return this.customerService.findLikes(req.user.id);
+    async getLikes(@Request() req: any) {
+        const likes = await this.customerService.getLikes(req.user.id);
+        if (likes.length === 0) throw new NotFoundException();
+        return likes;
+    }
+
+    @UseGuards(AuthenticatedGuard)
+    @Delete("like/:houseId")
+    deleteLike(@Request() req: any, @Param("houseId") houseId: string) {
+        return this.customerService.removeLike(req.user.id, +houseId);
     }
 }

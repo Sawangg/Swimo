@@ -1,6 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany } from "typeorm";
-import { HousingImg } from "./housingImg.entity";
-import { Customer } from "src/customers/entities/customer.entity";
+import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Housing {
@@ -43,9 +41,6 @@ export class Housing {
     @Column({ type: "varchar", array: true, default: [] })
     tags: string[];
 
-    @OneToMany(() => HousingImg, (housingImg: HousingImg) => housingImg.house, { onDelete: "CASCADE" })
-    photos: HousingImg[];
-
-    @ManyToMany(() => Customer, (customer: Customer) => customer.id, { onDelete: "CASCADE" })
-    hasLiked?: Array<Customer>;
+    @Column({ type: "text", array: true, default: [], nullable: false })
+    photos: string[];
 }

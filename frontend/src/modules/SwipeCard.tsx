@@ -1,20 +1,20 @@
 import React, { useState, DetailedHTMLProps, HTMLAttributes, useEffect } from "react";
 import { to as interpolate, animated, useSpring } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
-import { House } from "hooks/useHouse";
-import { useLogin } from "hooks/useLogin";
+import { useHouse } from "hooks/useHouse";
+import { useLike } from "hooks/useLike";
 import infoSvg from "../assets/info.svg";
+import axios from "axios";
 
 export type SwipeCardProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
-    house: House;
     openProfile: () => void;
 }
 
 export const SwipeCard: React.FC<SwipeCardProps> = ({
-    house,
     openProfile,
 }) => {
-    const { user, sendLike } = useLogin();
+    const { house, setNewHouse } = useHouse();
+    const { sendLike } = useLike();
     const [gone] = useState(() => new Set());
     const [imgIdx, setImgIdx] = useState(0);
 
@@ -25,12 +25,8 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
     const [springValues, api] = useSpring((i: number) => ({ ...to(i), from: from() }));
     const bind = useDrag(({ event, args: [index], active, movement: [mx], direction: [xDir], velocity: [vx] }) => {
         event.preventDefault();
-        const trigger = vx > 0.2;
-        if (!active && trigger) {
-            if (xDir > 0) {
-                sendLike(user.id, house.id);
-                openProfile();
-            }
+        if (!active && vx > 0.2) {
+            if (xDir > 0) sendLike(house.id);
             gone.add(index);
         }
         api.start(() => {
@@ -42,6 +38,14 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
                 config: { friction: 50, tension: active ? 800 : isGone ? 120 : 500 },
             };
         });
+        if (!active && gone.has(index)) {
+            setTimeout(async () => {
+                api.set({ x: 0 });
+                const rep = await axios.get("http://localhost:3001/api/housing/random", { withCredentials: true });
+                setNewHouse(rep.data);
+                gone.clear();
+            }, 500);
+        }
     }, { axis: "x", rubberband: false });
 
     const ejectCard = (dir: number) => {
@@ -78,8 +82,8 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
                 style={{ transform: interpolate([springValues.rot, springValues.scale], trans) }}
                 {...bind()}
             >
-                <div className="absolute filter-black w-full h-full rounded-lg" />
-                <img className="select-none touch-none rounded-lg min-h-full min-w-full h-full w-full max-h-full max-w-full" src={house.photos[imgIdx]} draggable="false" onMouseDown={e => e.preventDefault()} onClick={() => handleClick()} />
+                <div className="absolute filter-black w-full h-full rounded-lg" onClick={handleClick} />
+                <img className="select-none touch-none rounded-lg min-h-full min-w-full h-full w-full max-h-full max-w-full" src={house.photos[imgIdx]} draggable="false" onMouseDown={e => e.preventDefault()} />
                 {house.photos.length > 1 &&
                     <div className="absolute top-4 flex flex-row gap-4 pl-2">
                         {house.photos.map((_photo, key) => (

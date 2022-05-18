@@ -11,8 +11,8 @@ export const LeftPannel: React.FC<LeftPannelProps> = () => {
     const { user, resetLoggerUser } = useLogin();
     const navigate = useNavigate();
 
-    const disconnect = async () => {
-        await resetLoggerUser();
+    const disconnect = () => {
+        resetLoggerUser();
         navigate("/");
     };
 

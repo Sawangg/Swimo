@@ -8,7 +8,7 @@ import useSWR from "swr";
 
 export default function Home() {
     const { house, setNewHouse } = useHouse();
-    const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
 
     const fetcher = (url: string) => axios.get(url, { withCredentials: true }).then(res => res.data);
     const { data } = useSWR("http://localhost:3001/api/housing/random", { suspense: true, revalidateOnFocus: false, fetcher });
@@ -17,15 +17,15 @@ export default function Home() {
         if (data) setNewHouse(data);
     }, [data, setNewHouse]);
 
-    const openProfile = () => setIsProfileOpen(!isProfileOpen);
+    const openProfile = () => setIsDescriptionOpen(!isDescriptionOpen);
 
     return (
         <>
             <LeftPannel />
             <div className="fixed flex flex-row w-screen h-screen justify-center items-center">
-                <SwipeCard key={house.id} house={house} openProfile={openProfile} />
+                <SwipeCard openProfile={openProfile} />
             </div>
-            {isProfileOpen && <RightPannel house={house} /> }
+            {isDescriptionOpen && <RightPannel house={house} />}
         </>
     );
 }

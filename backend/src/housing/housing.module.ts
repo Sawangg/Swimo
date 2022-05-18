@@ -3,11 +3,11 @@ import { HousingController } from "./controllers/housing.controller";
 import { HousingService } from "./services/housing.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Housing } from "src/housing/entities/housing.entity";
-import { HousingImg } from "./entities/housingImg.entity";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Housing, HousingImg])],
+    imports: [TypeOrmModule.forFeature([Housing])],
     controllers: [HousingController],
     providers: [HousingService],
+    exports: [HousingService],
 })
 export class HousingModule { }

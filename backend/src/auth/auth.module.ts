@@ -7,9 +7,10 @@ import { Customer } from "src/customers/entities/customer.entity";
 import { LocalStrategy } from "./utils/LocalStrategy";
 import { SessionSerializer } from "./utils/SessionSerializer";
 import { CustomerModule } from "src/customers/customer.module";
+import { HousingModule } from "src/housing/housing.module";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Customer]), CustomerModule],
+    imports: [TypeOrmModule.forFeature([Customer]), CustomerModule, HousingModule],
     controllers: [AuthController],
     providers: [
         {

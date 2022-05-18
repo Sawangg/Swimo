@@ -17,7 +17,7 @@ export interface House {
     tags: Array<string>;
 }
 
-interface HouseStore {
+type HouseStore = {
     house: House;
     setNewHouse: (house: House) => void;
 }

@@ -11,10 +11,8 @@ export class HousingController {
     @Post("create")
     @UseInterceptors(FilesInterceptor("files"))
     createHousing(@Body() createHousing: CreateHousingDto, @UploadedFiles() files: Array<Express.Multer.File>) {
-        if (!files || files.length === 0) return new BadRequestException();
-        const filesData: Array<string> = [];
-        files.forEach(file => filesData.push(`data:${file.mimetype};base64,${file.buffer.toString("base64")}`));
-        return this.housingService.createHousing(createHousing, filesData);
+        if (!files || files.length === 0) throw new BadRequestException();
+        return this.housingService.createHousing(createHousing, files);
     }
 
     @Get("/random")
