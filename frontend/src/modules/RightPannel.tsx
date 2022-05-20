@@ -39,13 +39,15 @@ export const RightPannel: React.FC<RightPannelProps> = ({ house, like }) => {
                         <p>{house.nbParking}</p>
                     </div>
                 </div>
+                <div className="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">
+                </div>
                 <div className="mt-6 ">
                     <p>{house.desc}</p>
                 </div>
                 {like &&
                     <div className="absolute bottom-3 flex flex-row items-center justify-around w-full">
                         <Button onClick={() => removeLike(house.id)}>Unlike</Button>
-                        <Button>Report</Button>
+                        <Button color="primary-outline">Report</Button>
                     </div>
                 }
             </div>

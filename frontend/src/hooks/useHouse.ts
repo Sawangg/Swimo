@@ -19,8 +19,10 @@ export interface House {
 
 type HouseStore = {
     house: House;
+    houseError: boolean;
     setNewHouse: (house: House) => void;
-}
+    setHouseError: (houseError: boolean) => void;
+};
 
 export const useHouse = create<HouseStore>(set => ({
     house: {
@@ -39,6 +41,7 @@ export const useHouse = create<HouseStore>(set => ({
         photos: [],
         tags: [],
     },
+    houseError: true,
 
     setNewHouse: (house: House) => {
         set({
@@ -59,5 +62,9 @@ export const useHouse = create<HouseStore>(set => ({
                 tags: house.tags,
             },
         });
+    },
+
+    setHouseError: (houseError: boolean) => {
+        set({ houseError });
     },
 }));

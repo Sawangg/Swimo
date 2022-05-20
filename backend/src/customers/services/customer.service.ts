@@ -29,8 +29,7 @@ export class CustomerService {
         const customer = await this.findOne(id);
         customer.likes.push(house);
         await this.customersRepository.save({ id, likes: customer.likes });
-        const updatedCustomer = await this.findOne(id);
-        return updatedCustomer.likes;
+        return this.getLikes(id);
     }
 
     async findOne(id: number) {

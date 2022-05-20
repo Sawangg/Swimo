@@ -27,11 +27,13 @@ export class HousingService {
         return this.housingRepository.findOne(id);
     }
 
-    async findRandom() {
+    async findRandom(id: number) {
         const result = await this.housingRepository.createQueryBuilder("housing")
-            .select("*")
+            .leftJoinAndSelect("likes_table", "lt", "housing.id = lt.housingId")
+            .where("lt.customerId IS NULL")
+            .orWhere("lt.customerId = :id AND lt.housingId != housing.id", { id })
             .orderBy("RANDOM()")
-            .getRawOne();
+            .getOne();
         return result;
     }
 

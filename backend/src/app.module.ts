@@ -2,10 +2,7 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { CustomerModule } from "./customers/customer.module";
-import { VisitsModule } from "./visits/visits.module";
 import { HousingModule } from "./housing/housing.module";
-import { OffersModule } from "./offers/offers.module";
-import { SellsModule } from "./sells/sells.module";
 import { AuthModule } from "./auth/auth.module";
 import { PassportModule } from "@nestjs/passport";
 import { SessionEntity } from "./auth/entities/Session.entity";
@@ -32,10 +29,7 @@ import { SessionEntity } from "./auth/entities/Session.entity";
         }),
         AuthModule,
         CustomerModule,
-        VisitsModule,
         HousingModule,
-        OffersModule,
-        SellsModule,
     ],
     controllers: [],
     providers: [],

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { LoginUser, useLogin } from "hooks/useLogin";
 import { Button } from "ui/Button";
 import { LeftPannel } from "modules/LeftPannel";
-import { Input } from "ui/Input";
+import { TextInput } from "ui/TextInput";
 
 export default function Pofile() {
     const navigate = useNavigate();
@@ -15,8 +15,8 @@ export default function Pofile() {
     const sendContent = () => {
         const formData = new FormData();
         if (rawAvatarData) formData.append("file", rawAvatarData);
-        if (updatedUser.prenom) formData.append("prenom", user.prenom);
-        if (updatedUser.nom) formData.append("nom", user.nom);
+        if (updatedUser.prenom) formData.append("prenom", updatedUser.prenom);
+        if (updatedUser.nom) formData.append("nom", updatedUser.nom);
         updateUser(formData);
     };
 
@@ -30,16 +30,25 @@ export default function Pofile() {
     return (
         <div className="flex flex-row items-center">
             <LeftPannel />
-            <div className="flex flex-col h-3/5 w-7/12 bg-white m-auto rounded-lg p-4">
+            <div className="flex flex-col h-3/5 w-7/12 bg-white m-auto rounded-lg px-20 pb-20">
+                <div className="flex flex-col my-10 w-full">
+                    <div className="flex flex-row gap-5 items-center justify-around">
+                        <button className="">Profile</button>
+                        <button className="">Houses</button>
+                    </div>
+                </div>
                 <div className="flex flex-col">
                     <div className="flex flex-row">
                         <img className="cursor-pointer bg-primary-100 rounded-full shadow w-40 h-40" src={updatedUser.avatar} onClick={() => fileInput.current?.click()} />
                         <input type="file" ref={fileInput} name="avatar" hidden={true} onChange={e => handleAvatarInput(e)} />
-                        <Input label={user.prenom}></Input>
+                        <div className="flex flex-row gap-7 w-full justify-center">
+                            <TextInput placeholder={user.prenom} onChange={e => setUpdatedUser({ ...updatedUser, prenom: e.target.value })} />
+                            <TextInput placeholder={user.nom} onChange={e => setUpdatedUser({ ...updatedUser, nom: e.target.value })} />
+                        </div>
                     </div>
-                    <div className="flex flex-row w-full h-full justify-around items-center">
+                    <div className="flex flex-row w-full h-full justify-around items-center mt-60">
                         <Button onClick={() => sendContent()}>Save</Button>
-                        <Button color="secondary" onClick={() => navigate("/home")}>Cancel</Button>
+                        <Button color="primary-outline" onClick={() => navigate("/home")}>Cancel</Button>
                     </div>
                 </div>
             </div>

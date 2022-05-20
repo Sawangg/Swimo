@@ -28,10 +28,10 @@ export const Liked: React.FC<LikedProps> = () => {
                 </div>
             }
             {likes.length > 0 && likes[0] !== undefined &&
-                <div className="grid grid-cols-3 h-full w-full">
+                <div className="grid grid-cols-3 h-full w-full gap-4">
                     {likes.map((house: House, key: number) => (
-                        <div className="relative flex items-center justify-center mx-2" key={house.id}>
-                            <img className="shadow-lg rounded-lg cursor-pointer" src={house.photos[0]} onClick={() => handleClick(key)} />
+                        <div className="relative flex items-center justify-center mx-2 w-full h-full" key={house.id}>
+                            <img className="shadow-lg rounded-lg cursor-pointer w-full h-full" src={house.photos[0]} onClick={() => handleClick(key)} />
                             <p className="text-white font-bold absolute left-2 bottom-3">{house.title}</p>
                         </div>
                     ))}

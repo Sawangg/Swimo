@@ -13,11 +13,7 @@ export const useLike = create<LikeStore>((set, get) => ({
     likes: [],
     sendLike: async (houseId: number) => {
         const rep = await axios.post("http://localhost:3001/api/customer/like", { houseId }, { withCredentials: true });
-        if (rep.status === 201) {
-            const currentLikes = get().likes;
-            currentLikes.push(rep.data[0]);
-            set({ likes: currentLikes });
-        }
+        if (rep.status === 201) set({ likes: rep.data });
     },
     getLikes: async () => {
         const rep = await axios.get("http://localhost:3001/api/customer/likes", { withCredentials: true });

@@ -13,7 +13,7 @@ export type SwipeCardProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, H
 export const SwipeCard: React.FC<SwipeCardProps> = ({
     openProfile,
 }) => {
-    const { house, setNewHouse } = useHouse();
+    const { house, houseError, setNewHouse, setHouseError } = useHouse();
     const { sendLike } = useLike();
     const [gone] = useState(() => new Set());
     const [imgIdx, setImgIdx] = useState(0);
@@ -26,7 +26,18 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
     const bind = useDrag(({ event, args: [index], active, movement: [mx], direction: [xDir], velocity: [vx] }) => {
         event.preventDefault();
         if (!active && vx > 0.2) {
-            if (xDir > 0) sendLike(house.id);
+            if (xDir > 0) {
+                sendLike(house.id).then(() => {
+                    axios.get("http://localhost:3001/api/housing/random", { withCredentials: true }).then(rep => {
+                        console.log("YOOOOOOO");
+                        setNewHouse(rep.data);
+                        setHouseError(false);
+                    }).catch(() => {
+                        console.log("???????????????????");
+                        setHouseError(true);
+                    });
+                });
+            }
             gone.add(index);
         }
         api.start(() => {
@@ -39,10 +50,8 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
             };
         });
         if (!active && gone.has(index)) {
-            setTimeout(async () => {
+            setTimeout(() => {
                 api.set({ x: 0 });
-                const rep = await axios.get("http://localhost:3001/api/housing/random", { withCredentials: true });
-                setNewHouse(rep.data);
                 gone.clear();
             }, 500);
         }
@@ -62,12 +71,26 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
         else if (e.key === "ArrowLeft") ejectCard(-1);
     };
 
-    const handleClick = () => {
+    const handleClickPhoto = () => {
         if (springValues.x.toJSON() === 0) {
             const temp = (imgIdx + 1) % house.photos.length;
             setImgIdx(temp);
         }
     };
+
+    const newHouse = async () => {
+        const rep = await axios.get("http://localhost:3001/api/housing/random", { withCredentials: true });
+        if (rep.status === 200) {
+            setNewHouse(rep.data);
+            setHouseError(false);
+        } else {
+            setHouseError(true);
+        }
+    };
+
+    useEffect(() => {
+        if (house.id === 0) newHouse();
+    }, [house, newHouse]);
 
     useEffect(() => {
         window.addEventListener("keydown", handleArrows);
@@ -76,13 +99,13 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
         };
     });
 
-    return (
+    return !houseError ? (
         <animated.div className="flex items-center justify-center will-change-transform select-none min-w-1/5 min-h-4/6 max-w-1/5 max-h-4/6 h-4/6 w-1/5 -z-50" style={{ x: springValues.x }}>
             <animated.div className="touch-none bg-no-repeat w-full h-full border-10 will-change-transform cursor-grab rounded-lg shadow-lg"
                 style={{ transform: interpolate([springValues.rot, springValues.scale], trans) }}
                 {...bind()}
             >
-                <div className="absolute filter-black w-full h-full rounded-lg" onClick={handleClick} />
+                <div className="absolute filter-black w-full h-full rounded-lg" onClick={handleClickPhoto} />
                 <img className="select-none touch-none rounded-lg min-h-full min-w-full h-full w-full max-h-full max-w-full" src={house.photos[imgIdx]} draggable="false" onMouseDown={e => e.preventDefault()} />
                 {house.photos.length > 1 &&
                     <div className="absolute top-4 flex flex-row gap-4 pl-2">
@@ -143,5 +166,7 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
                 </div>
             </animated.div>
         </animated.div>
+    ) : (
+        <h1 className="text-primary-800">There is no more estate to discover !</h1>
     );
 };
