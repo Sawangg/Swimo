@@ -1,4 +1,5 @@
 import { IsDateString, IsNotEmpty, IsNumberString, IsOptional, IsString, MaxLength, MinLength } from "class-validator";
+import type { Customer } from "src/customers/entities/customer.entity";
 
 export class CreateHousingDto {
     @IsNotEmpty()
@@ -6,9 +7,8 @@ export class CreateHousingDto {
     @MaxLength(99)
     title: string;
 
-    @IsNotEmpty()
-    @MinLength(1)
-    ownerName: string;
+    @IsOptional()
+    owner: Customer;
 
     @IsString()
     type: string;

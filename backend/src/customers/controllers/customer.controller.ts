@@ -51,6 +51,14 @@ export class CustomerController {
     }
 
     @UseGuards(AuthenticatedGuard)
+    @Get("owns")
+    async getOwnedHousing(@Request() req: any) {
+        const owned = await this.customerService.getOwned(req.user.id);
+        if (owned.length === 0) throw new NotFoundException();
+        return owned;
+    }
+
+    @UseGuards(AuthenticatedGuard)
     @Delete("like/:houseId")
     deleteLike(@Request() req: any, @Param("houseId") houseId: string) {
         return this.customerService.removeLike(req.user.id, +houseId);

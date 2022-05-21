@@ -4,12 +4,12 @@ import { Entity, Column, Index, PrimaryColumn } from "typeorm";
 @Entity({ name: "sessions" })
 export class SessionEntity implements ISession {
     @Index()
-    @Column("bigint")
+    @Column("bigint", { nullable: false })
     expiredAt: number;
 
-    @PrimaryColumn("varchar", { length: 255 })
+    @PrimaryColumn("varchar", { length: 255, nullable: false })
     id: string;
 
-    @Column("text")
+    @Column("text", { nullable: false })
     json: string;
 }

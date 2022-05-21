@@ -4,7 +4,7 @@ import type { Request } from "express";
 
 @Injectable()
 export class LocalAuthGuard extends AuthGuard("local") {
-    override async canActivate(context: ExecutionContext) {
+    override async canActivate(context: ExecutionContext): Promise<boolean> {
         const result = (await super.canActivate(context)) as boolean;
         await super.logIn(context.switchToHttp().getRequest());
         return result;

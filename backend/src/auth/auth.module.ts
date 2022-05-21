@@ -1,7 +1,6 @@
 import { Module } from "@nestjs/common";
 import { AuthService } from "./services/auth.service";
 import { AuthController } from "./controllers/auth.controller";
-import { CustomerService } from "src/customers/services/customer.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Customer } from "src/customers/entities/customer.entity";
 import { LocalStrategy } from "./utils/LocalStrategy";
@@ -12,17 +11,6 @@ import { HousingModule } from "src/housing/housing.module";
 @Module({
     imports: [TypeOrmModule.forFeature([Customer]), CustomerModule, HousingModule],
     controllers: [AuthController],
-    providers: [
-        {
-            provide: "AUTH_SERVICE",
-            useClass: AuthService,
-        },
-        {
-            provide: "CUSTOMER_SERVICE",
-            useClass: CustomerService,
-        },
-        LocalStrategy,
-        SessionSerializer,
-    ],
+    providers: [AuthService, LocalStrategy, SessionSerializer],
 })
 export class AuthModule { }

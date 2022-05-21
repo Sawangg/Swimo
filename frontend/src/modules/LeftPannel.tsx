@@ -51,8 +51,8 @@ export const LeftPannel: React.FC<LeftPannelProps> = () => {
             </div>
             <div className="flex flex-col m-4">
                 <div className="flex flex-row gap-5 items-center justify-around">
-                    <button className="" onClick={() => setCurrentContent("like")}>Liked</button>
-                    <button className="" onClick={() => setCurrentContent("messages")}>Messages</button>
+                    <button className={currentContent === "like" ? "border-b-2 border-primary-500" : ""} onClick={() => setCurrentContent("like")}>Liked</button>
+                    <button className={currentContent === "messages" ? "border-b-2 border-primary-500" : ""} onClick={() => setCurrentContent("messages")}>Messages</button>
                 </div>
                 {currentContent === "like" && <Liked />}
             </div>

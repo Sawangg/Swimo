@@ -1,6 +1,6 @@
 import { Exclude } from "class-transformer";
 import { Housing } from "src/housing/entities/housing.entity";
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, OneToMany } from "typeorm";
 
 @Entity()
 export class Customer {
@@ -22,29 +22,22 @@ export class Customer {
     @Column({ name: "avatar", type: "text", nullable: true })
     avatar?: string;
 
-    @ManyToMany(() => Housing, (housing: Housing) => housing.id, { onDelete: "CASCADE" })
-    @JoinTable({ name: "likes_table" })
-    likes: Housing[];
+    @ManyToMany(() => Housing, (housing: Housing) => housing.id, { nullable: true, onDelete: "CASCADE" })
+    @JoinTable({ name: "likes" })
+    likes?: Housing[];
 
-    @Column({ name: "admin", default: false, nullable: false })
-    isAdmin: boolean;
+    @OneToMany(() => Housing, housing => housing.owner, { nullable: true, onDelete: "CASCADE" })
+    owns?: Housing[];
 }
 
 export class SerializedCustomer {
     id: number;
-
     nom: string;
-
     prenom: string;
-
     login: string;
 
     @Exclude()
     password: string;
-
-    avatar?: string;
-
-    isAdmin: boolean;
 
     constructor(partial: Partial<SerializedCustomer>) {
         Object.assign(this, partial);

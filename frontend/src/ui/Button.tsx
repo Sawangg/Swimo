@@ -1,5 +1,4 @@
 import React, { ButtonHTMLAttributes, DetailedHTMLProps, ReactNode } from "react";
-import { Spinner } from "./Spinner";
 
 const sizeClassnames = {
     big: "py-2 px-6 text-sm rounded-lg",
@@ -9,9 +8,9 @@ const sizeClassnames = {
 
 const colorClassnames = {
     primary:
-        "text-button uppercase text-primary-50 bg-gradient-to-l from-primary-600 to-primary-400 transition duration-200 ease-in-out hover:bg-accent-hover disabled:text-accent-disabled disabled:bg-accent-hover",
+        "shadow-md text-button uppercase text-primary-50 bg-gradient-to-l from-primary-600 to-primary-400 transition duration-200 ease-in-out hover:bg-accent-hover disabled:text-accent-disabled disabled:bg-accent-hover",
     "primary-outline":
-        "text-button uppercase text-primary-500 border-2 border-primary-500 hover:bg-primary-500 hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-200 ease-in-out",
+        "shadow-md text-button uppercase text-primary-500 border-2 border-primary-500 hover:bg-primary-500 hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-200 ease-in-out",
     secondary:
         "text-button bg-primary-500 hover:bg-primary-400 disabled:text-primary-300",
 };
@@ -44,10 +43,5 @@ export const Button: React.FC<ButtonProps> = ({
         <span className={`flex items-center`}>
             {children}
         </span>
-        {loading ? (
-            <span className={`absolute`}>
-                <Spinner />
-            </span>
-        ) : null}
     </button>
 );

@@ -8,7 +8,6 @@ import { CustomerService } from "src/customers/services/customer.service";
 export class AuthController {
     constructor(private readonly customerService: CustomerService) { }
 
-
     @UseInterceptors(ClassSerializerInterceptor)
     @UseGuards(AuthenticatedGuard)
     @Get("/")
@@ -17,7 +16,7 @@ export class AuthController {
             const user = await this.customerService.findOne(req.user.id);
             return new SerializedCustomer(user);
         } catch {
-            return new NotFoundException();
+            throw new NotFoundException();
         }
     }
 
@@ -31,7 +30,7 @@ export class AuthController {
     @UseGuards(AuthenticatedGuard)
     @Delete("/logout")
     logout(@RequestD() req: Request, @Res() res: Response) {
-        req.logout();
-        return res.sendStatus(200);
+        // @ts-expect-error: Need callback
+        req.logout(() => res.sendStatus(200));
     }
 }

@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Customer } from "src/customers/entities/customer.entity";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
 
 @Entity()
 export class Housing {
@@ -8,8 +9,8 @@ export class Housing {
     @Column()
     title: string;
 
-    @Column()
-    ownerName: string;
+    @ManyToOne(() => Customer, customer => customer.owns)
+    owner: Customer;
 
     @Column({ default: "House" })
     type: string;

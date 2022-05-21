@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Customer } from "src/customers/entities/customer.entity";
 import { HousingService } from "src/housing/services/housing.service";
@@ -14,6 +14,7 @@ export class CustomerService {
     constructor(
         @InjectRepository(Customer)
         private readonly customersRepository: Repository<Customer>,
+        @Inject(forwardRef(() => HousingService))
         private readonly housingService: HousingService,
     ) { }
 
@@ -40,16 +41,24 @@ export class CustomerService {
         return result[0];
     }
 
+    findByUsername(login: string): Promise<Customer> {
+        return this.customersRepository.findOne({ where: { login } });
+    }
+
     async getLikes(id: number) {
         const result = await this.customersRepository.createQueryBuilder("customer")
             .leftJoinAndSelect("customer.likes", "like")
             .where("customer.id = :id", { id })
-            .getMany();
-        return result[0].likes;
+            .getOne();
+        return result.likes;
     }
 
-    findByUsername(login: string): Promise<Customer> {
-        return this.customersRepository.findOne({ where: { login } });
+    async getOwned(id: number) {
+        const result = await this.customersRepository.createQueryBuilder("customer")
+            .leftJoinAndSelect("customer.owns", "owns")
+            .where("customer.id = :id", { id })
+            .getOne();
+        return result.owns;
     }
 
     async updateCustomer(id: number, data: UpdateCustomerDto, file: Express.Multer.File): Promise<Customer> {

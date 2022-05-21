@@ -1,5 +1,6 @@
-import { Injectable } from "@nestjs/common";
+import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { CustomerService } from "src/customers/services/customer.service";
 import { Housing } from "src/housing/entities/housing.entity";
 import type { DeleteResult, Repository } from "typeorm";
 import type { CreateHousingDto } from "../dtos/createHousing.dto";
@@ -9,14 +10,16 @@ export class HousingService {
     constructor(
         @InjectRepository(Housing)
         private readonly housingRepository: Repository<Housing>,
+        @Inject(forwardRef(() => CustomerService))
+        private readonly customerService: CustomerService,
     ) { }
 
-    createHousing(createHousingDto: CreateHousingDto, files: Array<Express.Multer.File>) {
+    async createHousing(createHousingDto: CreateHousingDto, id: number, files: Array<Express.Multer.File>) {
         const filesData: Array<string> = [];
         files.forEach(file => filesData.push(`data:${file.mimetype};base64,${file.buffer.toString("base64")}`));
         createHousingDto.photos = filesData;
-        const newHousing = this.housingRepository.create(createHousingDto);
-        return this.housingRepository.save(newHousing);
+        createHousingDto.owner = await this.customerService.findOne(id);
+        return this.housingRepository.save(createHousingDto);
     }
 
     findAll(): Promise<Housing[]> {
@@ -24,14 +27,14 @@ export class HousingService {
     }
 
     findOne(id: number) {
-        return this.housingRepository.findOne(id);
+        return this.housingRepository.findOne({ where: { id } });
     }
 
     async findRandom(id: number) {
         const result = await this.housingRepository.createQueryBuilder("housing")
-            .leftJoinAndSelect("likes_table", "lt", "housing.id = lt.housingId")
-            .where("lt.customerId IS NULL")
-            .orWhere("lt.customerId = :id AND lt.housingId != housing.id", { id })
+            .leftJoinAndSelect("likes", "l", "housing.id = l.housingId")
+            .where("l.customerId IS NULL")
+            .orWhere("l.customerId = :id AND l.housingId != housing.id", { id })
             .orderBy("RANDOM()")
             .getOne();
         return result;

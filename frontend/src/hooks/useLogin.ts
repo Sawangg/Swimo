@@ -1,6 +1,5 @@
 import axios from "axios";
 import create from "zustand";
-import { House } from "./useHouse";
 
 export interface LoginUser {
     id: number;
@@ -11,8 +10,6 @@ export interface LoginUser {
 
 type LoginStore = {
     user: LoginUser;
-    liked: Array<House>;
-    isAdmin: boolean;
     isLogged: boolean;
     getUserStatus: () => Promise<void>;
     setLoggedUser: (username: string, password: string) => Promise<boolean>;
@@ -27,9 +24,7 @@ export const useLogin = create<LoginStore>(set => ({
         prenom: "",
         avatar: undefined,
     },
-    isAdmin: false,
     isLogged: false,
-    liked: [],
     getUserStatus: async () => {
         const rep = await axios.get("http://localhost:3001/api/auth", { withCredentials: true });
         if (rep.status === 200) {
@@ -40,7 +35,6 @@ export const useLogin = create<LoginStore>(set => ({
                     prenom: rep.data.prenom,
                     avatar: rep.data.avatar,
                 },
-                isAdmin: rep.data.isAdmin,
                 isLogged: true,
             });
         }
@@ -55,7 +49,6 @@ export const useLogin = create<LoginStore>(set => ({
                     prenom: rep.data.prenom,
                     avatar: rep.data.avatar,
                 },
-                isAdmin: rep.data.isAdmin,
                 isLogged: true,
             });
             return true;

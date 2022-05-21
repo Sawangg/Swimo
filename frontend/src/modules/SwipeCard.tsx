@@ -1,5 +1,6 @@
 import React, { useState, DetailedHTMLProps, HTMLAttributes, useEffect } from "react";
 import { to as interpolate, animated, useSpring } from "@react-spring/web";
+import { useNavigate } from "react-router-dom";
 import { useDrag } from "@use-gesture/react";
 import { useHouse } from "hooks/useHouse";
 import { useLike } from "hooks/useLike";
@@ -13,6 +14,7 @@ export type SwipeCardProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, H
 export const SwipeCard: React.FC<SwipeCardProps> = ({
     openProfile,
 }) => {
+    const navigate = useNavigate();
     const { house, houseError, setNewHouse, setHouseError } = useHouse();
     const { sendLike } = useLike();
     const [gone] = useState(() => new Set());
@@ -26,18 +28,7 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
     const bind = useDrag(({ event, args: [index], active, movement: [mx], direction: [xDir], velocity: [vx] }) => {
         event.preventDefault();
         if (!active && vx > 0.2) {
-            if (xDir > 0) {
-                sendLike(house.id).then(() => {
-                    axios.get("http://localhost:3001/api/housing/random", { withCredentials: true }).then(rep => {
-                        console.log("YOOOOOOO");
-                        setNewHouse(rep.data);
-                        setHouseError(false);
-                    }).catch(() => {
-                        console.log("???????????????????");
-                        setHouseError(true);
-                    });
-                });
-            }
+            if (xDir > 0) fetchHouse();
             gone.add(index);
         }
         api.start(() => {
@@ -58,12 +49,24 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
     }, { axis: "x", rubberband: false });
 
     const ejectCard = (dir: number) => {
+        if (dir > 0) fetchHouse();
         api.start(() => ({
             x: (200 + window.innerWidth) * dir,
             rot: Math.floor(Math.random() * (200 - 1) + 1) / 100 + (dir * 10 * 0.2),
             scale: 1.1,
             config: { friction: 50, tension: 120 },
         }));
+    };
+
+    const fetchHouse = () => {
+        sendLike(house.id).then(() => {
+            axios.get("http://localhost:3001/api/housing/random", { withCredentials: true }).then(rep => {
+                setNewHouse(rep.data);
+                setHouseError(false);
+            }).catch(() => {
+                setHouseError(true);
+            });
+        });
     };
 
     const handleArrows = (e: KeyboardEvent) => {
@@ -167,6 +170,9 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
             </animated.div>
         </animated.div>
     ) : (
-        <h1 className="text-primary-800">There is no more estate to discover !</h1>
+        <div className="flex flex-col gap-3 text-center">
+            <h1 className="text-primary-800">There is no more estate to discover</h1>
+            <h2 className="text-primary-800">You might want to change your <span className="underline text-primary-300 cursor-pointer" onClick={() => navigate("/profile")}>discovery settings</span> !</h2>
+        </div>
     );
 };
