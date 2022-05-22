@@ -1,9 +1,10 @@
 import create from "zustand";
+import { LoginUser } from "./useLogin";
 
 export interface House {
     id: number;
     title: string;
-    ownerName: string;
+    owner: LoginUser;
     type: string;
     nbRoom: number;
     area: number;
@@ -28,7 +29,12 @@ export const useHouse = create<HouseStore>(set => ({
     house: {
         id: 0,
         title: "",
-        ownerName: "",
+        owner: {
+            id: 0,
+            prenom: "",
+            nom: "",
+            avatar: "",
+        },
         type: "",
         nbRoom: 0,
         area: 0,
@@ -48,7 +54,7 @@ export const useHouse = create<HouseStore>(set => ({
             house: {
                 id: house.id,
                 title: house.title,
-                ownerName: house.ownerName,
+                owner: house.owner,
                 type: house.type,
                 nbRoom: house.nbRoom,
                 area: house.area,

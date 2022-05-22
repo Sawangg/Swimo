@@ -11,40 +11,50 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "useUnknownInCatchVariables": true,
+    
         // Modules
         "baseUrl": "src",
         "module": "ESNext",
         "moduleResolution": "node",
         "resolveJsonModule": true,
         "paths": {
-            "@components/*": [
-                "./components/*"
+            "@modules/*": [
+                "./modules/*"
             ],
             "@pages/*": [
                 "./pages/*"
             ],
-            "@stores/*": [
-                "./stores/*"
+            "@hooks/*": [
+                "./hooks/*"
+            ],
+            "@ui/*": [
+                "./ui/*"
             ],
         },
+    
         // Language and Environment
-        "target": "ES6",
+        "target": "ESNext",
         "lib": [
             "dom",
             "dom.iterable",
             "esnext"
         ],
         "jsx": "preserve",
+
         // Interop Constraints
         "forceConsistentCasingInFileNames": true,
         "esModuleInterop": true,
         "isolatedModules": true,
+
         // Completeness
         "skipLibCheck": true,
+
         // Emit
         "noEmit": true,
+
         // Projects
         "incremental": true,
+
         // JavaScript Support
         "allowJs": true
     },

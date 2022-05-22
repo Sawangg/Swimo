@@ -28,7 +28,7 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
     const bind = useDrag(({ event, args: [index], active, movement: [mx], direction: [xDir], velocity: [vx] }) => {
         event.preventDefault();
         if (!active && vx > 0.2) {
-            if (xDir > 0) fetchHouse();
+            if (xDir > 0) fetchAfterLike();
             gone.add(index);
         }
         api.start(() => {
@@ -49,7 +49,8 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
     }, { axis: "x", rubberband: false });
 
     const ejectCard = (dir: number) => {
-        if (dir > 0) fetchHouse();
+        if (dir > 0) fetchAfterLike();
+        else newHouse();
         api.start(() => ({
             x: (200 + window.innerWidth) * dir,
             rot: Math.floor(Math.random() * (200 - 1) + 1) / 100 + (dir * 10 * 0.2),
@@ -58,7 +59,7 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
         }));
     };
 
-    const fetchHouse = () => {
+    const fetchAfterLike = () => {
         sendLike(house.id).then(() => {
             axios.get("http://localhost:3001/api/housing/random", { withCredentials: true }).then(rep => {
                 setNewHouse(rep.data);
@@ -83,7 +84,7 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
 
     const newHouse = async () => {
         const rep = await axios.get("http://localhost:3001/api/housing/random", { withCredentials: true });
-        if (rep.status === 200) {
+        if (rep.status === 200 || rep.status === 304) {
             setNewHouse(rep.data);
             setHouseError(false);
         } else {

@@ -8,12 +8,14 @@ const sizeClassnames = {
 
 const colorClassnames = {
     primary:
-        "shadow-md text-button uppercase text-primary-50 bg-gradient-to-l from-primary-600 to-primary-400 transition duration-200 ease-in-out hover:bg-accent-hover disabled:text-accent-disabled disabled:bg-accent-hover",
+        "shadow-md text-button uppercase text-primary-50 bg-gradient-to-l from-primary-600 to-primary-400 transition ease-in-out delay-100 duration-100\
+        hover:text-primary-100",
     "primary-outline":
-        "shadow-md text-button uppercase text-primary-500 border-2 border-primary-500 hover:bg-primary-500 hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-200 ease-in-out",
+        "shadow-md text-button uppercase text-primary-500 border-2 border-primary-500 hover:bg-primary-500 hover:bg-opacity-5\
+        focus:outline-none focus:ring-0 transition duration-200 ease-in-out",
     secondary:
         "text-button bg-primary-500 hover:bg-primary-400 disabled:text-primary-300",
-};
+    };
 
 export type ButtonProps = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & {
     size?: keyof typeof sizeClassnames;
