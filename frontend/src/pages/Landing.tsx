@@ -27,16 +27,16 @@ export default function Landing() {
                 </div>
             </nav>
 
-            <div className="pt-28">
-                <div className="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
+            <div className="pt-28 md:pt-20">
+                <div className="container px-3 md:px-14 mx-auto flex flex-wrap flex-col md:flex-row items-center">
                     <div className="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left">
                         <p className="uppercase tracking-loose w-full">Are you looking for your next dream house ?</p>
-                        <h1 className="my-4 text-5xl font-bold leading-tight">Welcome to Swimo</h1>
-                        <p className="leading-normal text-2xl mb-8">The newest platform to find your next lodging, rentals or family house !</p>
+                        <h1 className="my-4 text-5xl md:text-4xl font-bold leading-tight">Welcome to Swimo</h1>
+                        <p className="leading-normal text-2xl md:text-xl mb-8">The newest platform to find your next lodging, rentals or family house !</p>
                         <Button>Register</Button>
                     </div>
-                    <div className="w-full h-full md:w-3/5 py-6 text-center flex justify-center">
-                        <img className="w-full h-full rounded-lg shadow-lg z-40" src={main} />
+                    <div className="w-full h-full lg:w-3/5 md:w-2/5 py-6 text-center flex justify-center">
+                        <img className="w-full h-full rounded-lg shadow-lg z-20" src={main} />
                     </div>
                 </div>
             </div>
