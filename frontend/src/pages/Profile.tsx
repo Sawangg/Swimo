@@ -128,7 +128,7 @@ export default function Pofile() {
                             <TextInput placeholder={"Description"} onChange={e => setCreateHouse({ ...createdHouse, desc: e.target.value })} />
                             <input type="file" multiple={true} onChange={e => handleHousesFilesInput(e)}/>
                         </div>
-                        <div className="flex flex-row w-full h-full justify-around items-center mt-60">
+                        <div className="flex flex-row w-full h-full justify-around items-center mt-48">
                             <Button onClick={() => sendNewHouse()}>Create</Button>
                             <Button color="primary-outline" onClick={() => setMenu("estates")}>Cancel</Button>
                         </div>

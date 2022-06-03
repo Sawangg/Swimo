@@ -27,7 +27,7 @@ export default function Landing() {
                 </div>
             </nav>
 
-            <div className="pt-28 md:pt-20">
+            <div className="lg:pt-32 md:pt-20">
                 <div className="container px-3 md:px-14 mx-auto flex flex-wrap flex-col md:flex-row items-center">
                     <div className="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left">
                         <p className="uppercase tracking-loose w-full">Are you looking for your next dream house ?</p>
@@ -40,7 +40,7 @@ export default function Landing() {
                     </div>
                 </div>
             </div>
-            <div className="relative lg:mt-10">
+            <div className="relative lg:mt-14">
                 <svg viewBox="0 0 1428 174" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
                     <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                         <g transform="translate(-2.000000, 44.000000)" fill="#CCEEF2" fillRule="nonzero">
